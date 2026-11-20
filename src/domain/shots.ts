@@ -40,3 +40,17 @@ export function groupShotsByBean(shots: ReadonlyArray<Shot>, beans: ReadonlyArra
   }
   return [...groups.values()]
 }
+
+export function activeBeans(beans: ReadonlyArray<Bean>): Array<Bean> {
+  return beans.filter((bean) => !bean.archived).toSorted((a, b) => a.name.localeCompare(b.name, 'en-GB'))
+}
+
+export function defaultBeanId(beans: ReadonlyArray<Bean>, shots: ReadonlyArray<Shot>): string {
+  const active = activeBeans(beans)
+  const lastBeanId = sortNewestFirst(shots).at(0)?.beanId
+  return active.find((bean) => bean.id === lastBeanId)?.id ?? active.at(0)?.id ?? ''
+}
+
+export function lastShotForBean(beanId: string, shots: ReadonlyArray<Shot>): Shot | undefined {
+  return sortNewestFirst(shots).find((shot) => shot.beanId === beanId)
+}
