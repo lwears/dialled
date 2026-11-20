@@ -2,7 +2,7 @@ import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
 import { VitePWA } from 'vite-plugin-pwa'
 
-const themeColor = '#17110e'
+const themeColor = '#111012'
 
 export default defineConfig({
   base: process.env.BASE_PATH ?? '/',

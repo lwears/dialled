@@ -1,18 +1,23 @@
 import type { Route } from '../hooks/useHashRoute'
 
 const ICONS = {
-  beans: <path d="M12 3c4 0 7 3.6 7 9s-3 9-7 9-7-3.6-7-9 3-9 7-9Zm0 0c-2 3-2 6 0 9s2 6 0 9" />,
-  history: <path d="M4 6h16M4 12h16M4 18h10" />,
-  log: (
+  beans: (
     <>
-      <path d="M5 9h12v5a5 5 0 0 1-5 5h-2a5 5 0 0 1-5-5V9Z" />
-      <path d="M17 10h1.5a2.5 2.5 0 0 1 0 5H17M8 3v3M11 3v3M14 3v3" />
+      <ellipse cx="12" cy="12" rx="6" ry="8.5" transform="rotate(30 12 12)" />
+      <path d="M9 6.5c3 3 0 8 3 11" />
     </>
   ),
+  history: (
+    <>
+      <circle cx="12" cy="12" r="8" />
+      <path d="M12 8v4l3 2" />
+    </>
+  ),
+  log: <path d="M12 5v14M5 12h14" />,
   settings: (
     <>
       <circle cx="12" cy="12" r="3" />
-      <path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1" />
+      <path d="M12 3v2.5M12 18.5V21M3 12h2.5M18.5 12H21M5.6 5.6l1.8 1.8M16.6 16.6l1.8 1.8M5.6 18.4l1.8-1.8M16.6 7.4l1.8-1.8" />
     </>
   ),
 } satisfies Record<Route, React.ReactNode>

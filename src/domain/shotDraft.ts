@@ -47,7 +47,7 @@ export function draftFromPrefill(beanId: string, prefill: ShotPrefill): ShotDraf
     rating: undefined,
     taste: undefined,
     time: '',
-    yieldOut: formatNumber(prefill.yieldOutG),
+    yieldOut: '',
   }
 }
 

@@ -1,4 +1,3 @@
-import type { ReactNode } from 'react'
 import { GRIND_MAX, GRIND_MIN } from '../domain/constants'
 import { formatRatio } from '../domain/ratio'
 import { ROAST_LABELS, TASTE_LABELS, TASTES } from '../domain/schemas'
@@ -20,7 +19,6 @@ export function ShotFields({
   idPrefix,
   onChange,
   onNewBean,
-  timer,
 }: {
   beans: ReadonlyArray<Bean>
   draft: ShotDraft
@@ -29,7 +27,6 @@ export function ShotFields({
   idPrefix: string
   onChange: (patch: Partial<ShotDraft>) => void
   onNewBean?: () => void
-  timer?: ReactNode
 }) {
   const dose = Number(draft.dose.replace(',', '.'))
   const yieldOut = Number(draft.yieldOut.replace(',', '.'))
@@ -103,8 +100,6 @@ export function ShotFields({
         step={grindStep}
         value={draft.grind}
       />
-
-      {timer}
 
       <Stepper
         decimals={1}

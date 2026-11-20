@@ -6,12 +6,12 @@ Tuned for a Gaggia Classic and a Niche Zero (grind 0–50), with medium and dark
 
 ## Features
 
-- **Log a shot**: bean picker, dose/yield/grind prefilled from your last shot with that bean (18g → 36g for a new bean), large steppers, a tap-to-start stopwatch that fills in the shot time, taste tags, an optional rating and notes.
+- **Log a shot**: a scrolling "Before the shot" section (bean, dose and grind steppers, prefilled from your last shot with that bean, or 18g for a new bean) and a thumb dock above the tab bar for what you read off the scale: yield and shot time (with the target yield shown), the ratio, taste, and Save. Rating and notes sit behind the pencil button. After saving, the dock shows the suggestion.
 - **Suggestion after every shot**: one change at a time, with the reason. See [Suggestion rules](#suggestion-rules).
 - **History**: shots grouped by bean, newest first, with time and grind sparklines for the last 10 shots. Tap a shot to edit or delete it.
 - **Beans**: add, edit, archive and restore.
 - **Settings**: grind step size, JSON backup and restore, CSV export of shots, and a reminder when your last backup is over 30 days old.
-- Works offline after the first load. Dark theme, safe-area aware, no input zoom.
+- Works offline after the first load. "Dark Roast & Creamer" dark theme, safe-area aware, no input zoom, and the dock rides above the iOS keypad while you type in it.
 
 ## Running locally
 
@@ -109,8 +109,8 @@ src/
                 grouping, backup/CSV, formatting. No React, no storage.
   storage/      Repository interface + Dexie (IndexedDB) implementation,
                 navigator.storage.persist()
-  hooks/        DataContext (shared state + actions), form, stopwatch,
-                routing, backup, persistence
+  hooks/        DataContext (shared state + actions), form, routing, backup,
+                persistence, keyboard inset, element height
   components/   presentational components: props in, markup out
   screens/      thin containers that wire hooks to components
   lib/          browser helpers (share/download a file, ids)
