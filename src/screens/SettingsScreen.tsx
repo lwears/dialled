@@ -1,6 +1,6 @@
 import { ChoiceChips } from '../components/ChoiceChips'
 import { BACKUP_REMINDER_DAYS } from '../domain/constants'
-import { formatDate } from '../domain/format'
+import { formatDate, formatDateTime } from '../domain/format'
 import { useBackup } from '../hooks/useBackup'
 import { useBackupReminder } from '../hooks/useBackupReminder'
 import { useData } from '../hooks/DataContext'
@@ -107,7 +107,11 @@ export function SettingsScreen() {
         <p className="muted small">{PERSISTENCE_TEXT[persistence]}</p>
       </section>
 
-      <p className="muted small center">Dialled · everything stays on this device.</p>
+      <p className="muted small center">
+        Dialled · everything stays on this device
+        <br />
+        Build {formatDateTime(__BUILD_TIME__)}
+      </p>
     </div>
   )
 }

@@ -67,6 +67,10 @@ body {
   overscroll-behavior: none;
 }
 
+html {
+  min-height: calc(100% + env(safe-area-inset-top, 0px));
+}
+
 @supports (height: 100lvh) {
   :root {
     --full-height: 100lvh;
