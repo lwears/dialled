@@ -21,11 +21,13 @@ export function App() {
   const Screen = SCREENS[route]
 
   return (
-    <>
+    <div className="shell">
       <main className="app">
-        <Screen />
+        <div className="app__content">
+          <Screen />
+        </div>
       </main>
       <TabBar current={route} onNavigate={navigate} settingsBadge={backupDue} />
-    </>
+    </div>
   )
 }

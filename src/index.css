@@ -37,7 +37,10 @@
   --bottom-inset: max(calc(var(--safe-bottom) - 20px), 0px);
   --safe-left: env(safe-area-inset-left, 0px);
   --safe-right: env(safe-area-inset-right, 0px);
-  --tabbar-height: 49px;
+  --tabbar-height: 60px;
+  --tabbar-offset: calc(var(--bottom-inset) + 6px);
+  --tabbar-clearance: calc(var(--tabbar-offset) + var(--tabbar-height));
+  --full-height: 100vh;
 
   color-scheme: dark;
   font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, 'Segoe UI', Roboto, sans-serif;
@@ -58,14 +61,27 @@
 
 html,
 body {
+  height: 100%;
   margin: 0;
-  min-height: 100%;
+  overflow: hidden;
   background: var(--bg);
-  overscroll-behavior-y: none;
+  overscroll-behavior: none;
 }
 
-html {
-  min-height: calc(100% + env(safe-area-inset-top, 0px));
+@supports (height: 100lvh) {
+  :root {
+    --full-height: 100lvh;
+  }
+}
+
+.shell {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: var(--full-height);
+  display: flex;
+  flex-direction: column;
 }
 
 body {
@@ -125,10 +141,18 @@ button {
 }
 
 .app {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.app__content {
   max-width: 560px;
   margin: 0 auto;
   padding: calc(var(--safe-top) + var(--space-4)) calc(var(--safe-right) + var(--space-4))
-    calc(var(--bottom-inset) + var(--tabbar-height) + var(--space-5)) calc(var(--safe-left) + var(--space-4));
+    calc(var(--tabbar-clearance) + var(--space-5)) calc(var(--safe-left) + var(--space-4));
 }
 
 .screen {
@@ -580,14 +604,17 @@ button {
 
 /* Dock */
 .dock {
-  position: fixed;
-  right: 0;
-  bottom: calc(var(--tabbar-height) + var(--bottom-inset));
-  left: 0;
+  position: absolute;
+  right: calc(var(--safe-right) + var(--space-2));
+  bottom: calc(var(--tabbar-clearance) + var(--space-2));
+  left: calc(var(--safe-left) + var(--space-2));
   z-index: 5;
-  border-top: 1px solid var(--border);
-  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  max-width: 560px;
+  margin: 0 auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
   background: var(--surface);
+  box-shadow: 0 -8px 24px rgb(0 0 0 / 0.35);
 }
 
 .dock__inner {
@@ -596,7 +623,7 @@ button {
   gap: var(--space-4);
   max-width: 560px;
   margin: 0 auto;
-  padding: var(--space-4) calc(var(--safe-right) + var(--space-4)) var(--space-4) calc(var(--safe-left) + var(--space-4));
+  padding: var(--space-4);
 }
 
 .dock__header {
@@ -1051,16 +1078,25 @@ details[open] > summary {
 
 /* Sheet */
 .sheet {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
   width: 100%;
-  max-width: 560px;
-  max-height: calc(100dvh - var(--safe-top) - var(--space-5));
-  margin: auto auto 0;
+  max-width: none;
+  height: var(--full-height);
+  max-height: none;
+  margin: 0;
   padding: 0;
-  border: 1px solid var(--border);
-  border-bottom: 0;
-  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
-  background: var(--surface);
+  border: 0;
+  background: transparent;
   color: var(--text);
+}
+
+.sheet[open] {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
 }
 
 .sheet::backdrop {
@@ -1068,8 +1104,17 @@ details[open] > summary {
 }
 
 .sheet__body {
+  width: 100%;
+  max-width: 560px;
+  max-height: calc(var(--full-height) - var(--safe-top) - var(--space-5));
+  margin: 0 auto;
+  overflow-y: auto;
   padding: var(--space-4) calc(var(--safe-right) + var(--space-4)) calc(var(--bottom-inset) + var(--space-4))
     calc(var(--safe-left) + var(--space-4));
+  border: 1px solid var(--border);
+  border-bottom: 0;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  background: var(--surface);
 }
 
 .sheet__header {
@@ -1084,18 +1129,26 @@ details[open] > summary {
   padding: 0;
 }
 
-/* Tab bar */
+/* Tab bar: floating pill */
 .tabbar {
-  position: fixed;
-  right: 0;
-  bottom: 0;
-  left: 0;
+  position: absolute;
+  right: calc(var(--safe-right) + var(--space-4));
+  bottom: var(--tabbar-offset);
+  left: calc(var(--safe-left) + var(--space-4));
   z-index: 10;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  padding: 0 var(--safe-right) var(--bottom-inset) var(--safe-left);
-  border-top: 1px solid var(--border);
-  background: var(--bg);
+  gap: var(--space-1);
+  max-width: 480px;
+  height: var(--tabbar-height);
+  margin: 0 auto;
+  padding: 5px;
+  border: 1px solid rgb(255 255 255 / 0.08);
+  border-radius: 999px;
+  background: rgb(39 35 38 / 0.82);
+  box-shadow: 0 10px 30px rgb(0 0 0 / 0.5);
+  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+  backdrop-filter: blur(20px) saturate(1.4);
 }
 
 .tabbar__tab {
@@ -1103,16 +1156,25 @@ details[open] > summary {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 3px;
-  height: var(--tabbar-height);
+  gap: 2px;
+  min-width: 0;
   border: 0;
+  border-radius: 999px;
   background: none;
   font-size: 11px;
   font-weight: 600;
   color: var(--text-muted);
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.tabbar__tab:active {
+  transform: scale(0.96);
 }
 
 .tabbar__tab[aria-current='page'] {
+  background: rgb(242 164 99 / 0.16);
   color: var(--accent);
 }
 
@@ -1126,8 +1188,10 @@ details[open] > summary {
   position: absolute;
   top: -2px;
   right: -6px;
+  box-sizing: content-box;
   width: 8px;
   height: 8px;
+  border: 2px solid var(--surface-2);
   border-radius: 50%;
   background: var(--accent);
 }

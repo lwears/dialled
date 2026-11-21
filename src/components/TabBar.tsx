@@ -13,7 +13,12 @@ const ICONS = {
       <path d="M12 8v4l3 2" />
     </>
   ),
-  log: <path d="M12 5v14M5 12h14" />,
+  log: (
+    <>
+      <path d="M5 9h12v5a5 5 0 0 1-5 5h-2a5 5 0 0 1-5-5V9Z" />
+      <path d="M17 10h1.5a2.5 2.5 0 0 1 0 5H17M8 3.5v2.5M11 3.5v2.5M14 3.5v2.5" />
+    </>
+  ),
   settings: (
     <>
       <circle cx="12" cy="12" r="3" />

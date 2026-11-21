@@ -27,7 +27,17 @@ export function Sheet({
   }, [open])
 
   return (
-    <dialog aria-labelledby="sheet-title" className="sheet" onClose={onClose} ref={ref}>
+    <dialog
+      aria-labelledby="sheet-title"
+      className="sheet"
+      onClick={(event) => {
+        if (event.target === event.currentTarget) {
+          onClose()
+        }
+      }}
+      onClose={onClose}
+      ref={ref}
+    >
       {open ? (
         <div className="sheet__body">
           <header className="sheet__header">
