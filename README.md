@@ -45,13 +45,15 @@ npm run icons
 
 The app is static and uses hash routing (`#/history`), so no server rewrites are needed.
 
-### Cloudflare Pages
+### Cloudflare Workers (recommended)
 
-1. Push the repo to GitHub or GitLab.
-2. In the Cloudflare dashboard, go to **Workers & Pages → Create → Pages → Connect to Git** and pick the repo.
-3. Set the build command to `npm run build` and the output directory to `dist`.
-4. Under environment variables, add `NODE_VERSION` = `22`.
-5. Deploy. You'll get an `https://<project>.pages.dev` URL.
+`wrangler.jsonc` tells Cloudflare to serve the built `dist/` folder as static assets.
+
+1. Push the repo to GitHub.
+2. In the Cloudflare dashboard, go to **Workers & Pages → Create → Import a repository** and pick the repo.
+3. Set the project name to `dialled` (it must match `name` in `wrangler.jsonc`), the build command to `npm run build`, and the deploy command to `npx wrangler deploy`.
+4. If there are build variables, add `NODE_VERSION` = `22`.
+5. Deploy. You'll get an `https://dialled.<subdomain>.workers.dev` URL, and every push to `main` redeploys.
 
 ### GitHub Pages
 
