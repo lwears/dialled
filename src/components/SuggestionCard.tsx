@@ -2,19 +2,10 @@ import { formatNumber } from '../domain/format'
 import { formatRatio } from '../domain/ratio'
 import type { Suggestion } from '../domain/suggest'
 
-export function SuggestionCard({
-  onApply,
-  onDismiss,
-  suggestion,
-}: {
-  onApply: () => void
-  onDismiss: () => void
-  suggestion: Suggestion
-}) {
+function SuggestionDetails({ suggestion }: { suggestion: Suggestion }) {
   const { next } = suggestion
   return (
-    <div aria-live="polite" className="suggestion" role="status">
-      <p className="suggestion__eyebrow">Next shot</p>
+    <>
       <h2 className="suggestion__headline">{suggestion.headline}</h2>
       <p className="suggestion__reason">{suggestion.reason}</p>
       {suggestion.warnings.map((warning) => (
@@ -31,6 +22,23 @@ export function SuggestionCard({
         <span className="suggestion__ratio">({formatRatio(next.doseInG, next.yieldOutG)})</span> · grind{' '}
         {next.grindSetting}
       </p>
+    </>
+  )
+}
+
+export function SuggestionCard({
+  onApply,
+  onDismiss,
+  suggestion,
+}: {
+  onApply: () => void
+  onDismiss: () => void
+  suggestion: Suggestion
+}) {
+  return (
+    <div aria-live="polite" className="suggestion" role="status">
+      <p className="suggestion__eyebrow">Next shot</p>
+      <SuggestionDetails suggestion={suggestion} />
       <div className="suggestion__actions">
         <button className="btn btn--outline suggestion__dismiss" onClick={onDismiss} type="button">
           Dismiss
@@ -40,5 +48,14 @@ export function SuggestionCard({
         </button>
       </div>
     </div>
+  )
+}
+
+export function PastSuggestion({ suggestion }: { suggestion: Suggestion }) {
+  return (
+    <section aria-label="Suggestion after this shot" className="suggestion suggestion--past">
+      <p className="suggestion__eyebrow">Suggested after this shot</p>
+      <SuggestionDetails suggestion={suggestion} />
+    </section>
   )
 }

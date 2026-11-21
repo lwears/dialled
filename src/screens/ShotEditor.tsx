@@ -1,17 +1,21 @@
 import { useState } from 'react'
 import { ConfirmButton } from '../components/ConfirmButton'
 import { ShotFields } from '../components/ShotFields'
+import { PastSuggestion } from '../components/SuggestionCard'
 import { fromLocalDateInput, toLocalDateInput } from '../domain/format'
 import type { Shot } from '../domain/schemas'
 import { draftFromShot } from '../domain/shotDraft'
+import { suggestNextStep } from '../domain/suggest'
 import { useData } from '../hooks/DataContext'
 import { useShotForm } from '../hooks/useShotForm'
 
 export function ShotEditor({ onDone, shot }: { onDone: () => void; shot: Shot }) {
-  const { beans, deleteShot, saveShot, settings } = useData()
+  const { beans, deleteShot, saveShot, settings, shots } = useData()
   const form = useShotForm(() => draftFromShot(shot))
   const [when, setWhen] = useState(() => toLocalDateInput(shot.createdAt))
   const beanOptions = beans.filter((bean) => !bean.archived || bean.id === shot.beanId)
+  const bean = beans.find((candidate) => candidate.id === shot.beanId)
+  const suggestion = bean ? suggestNextStep(shot, shots, bean, { grindStep: settings.grindStep }) : null
 
   const save = async () => {
     const createdAt = when ? fromLocalDateInput(when) : shot.createdAt
@@ -31,6 +35,7 @@ export function ShotEditor({ onDone, shot }: { onDone: () => void; shot: Shot })
         void save()
       }}
     >
+      {suggestion ? <PastSuggestion suggestion={suggestion} /> : null}
       <div className="field">
         <label className="field__label" htmlFor="edit-when">
           Pulled at
