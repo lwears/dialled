@@ -1139,3 +1139,20 @@ details[open] > summary {
   font-size: 19px;
   line-height: 24px;
 }
+
+.diagnostics {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+  font-size: var(--fs-caption);
+}
+
+.diagnostics dt {
+  color: var(--text-muted);
+}
+
+.diagnostics dd {
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
