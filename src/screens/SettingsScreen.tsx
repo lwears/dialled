@@ -1,13 +1,10 @@
-import { useState } from 'react'
 import { ChoiceChips } from '../components/ChoiceChips'
-import { ScreenDiagnostics } from '../components/ScreenDiagnostics'
 import { BACKUP_REMINDER_DAYS } from '../domain/constants'
 import { formatDate } from '../domain/format'
 import { useBackup } from '../hooks/useBackup'
 import { useBackupReminder } from '../hooks/useBackupReminder'
 import { useData } from '../hooks/DataContext'
 import { usePersistence } from '../hooks/usePersistence'
-import { measureScreen } from '../lib/diagnostics'
 
 const GRIND_STEPS = [0.1, 0.25, 0.5, 1].map((step) => ({ label: String(step), value: step }))
 
@@ -24,15 +21,12 @@ export function SettingsScreen() {
   const overdue = useBackupReminder()
   const persistence = usePersistence()
   const { status } = backup
-  const [diagnostics, setDiagnostics] = useState<Array<[string, string]> | null>(null)
 
   return (
     <div className="screen">
       <header className="screen__header">
         <h1>Settings</h1>
       </header>
-
-      <ScreenDiagnostics onMeasure={() => setDiagnostics(measureScreen())} rows={diagnostics} />
 
       <section className="card stack">
         <h2>Grinder</h2>
