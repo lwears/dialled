@@ -125,7 +125,7 @@ export function LogScreen() {
         event.preventDefault()
         void save()
       }}
-      style={{ paddingBottom: dockHeight + 16 }}
+      style={{ paddingBottom: `max(calc(${dockHeight}px - var(--tabbar-clearance)), 0px)` }}
     >
       <h1 className="visually-hidden">Log a shot</h1>
 

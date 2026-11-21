@@ -1,6 +1,6 @@
 import { TabBar } from './components/TabBar'
 import { useBackupReminder } from './hooks/useBackupReminder'
-import { navigate, useHashRoute } from './hooks/useHashRoute'
+import { useHashRoute } from './hooks/useHashRoute'
 import { usePersistence } from './hooks/usePersistence'
 import { BeansScreen } from './screens/BeansScreen'
 import { HistoryScreen } from './screens/HistoryScreen'
@@ -27,7 +27,7 @@ export function App() {
           <Screen />
         </div>
       </main>
-      <TabBar current={route} onNavigate={navigate} settingsBadge={backupDue} />
+      <TabBar current={route} settingsBadge={backupDue} />
     </div>
   )
 }

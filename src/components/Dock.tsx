@@ -16,7 +16,7 @@ export function Dock({
   return (
     <section
       aria-label={label}
-      className="dock"
+      className={`dock${bottom == null ? '' : ' dock--raised'}`}
       onBlur={(event) => {
         if (!event.currentTarget.contains(event.relatedTarget)) {
           onFocusChange(false)
