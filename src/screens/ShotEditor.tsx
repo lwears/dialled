@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { CoachPanel } from '../components/CoachPanel'
 import { ConfirmButton } from '../components/ConfirmButton'
 import { ShotFields } from '../components/ShotFields'
 import { PastSuggestion } from '../components/SuggestionCard'
@@ -36,6 +37,7 @@ export function ShotEditor({ onDone, shot }: { onDone: () => void; shot: Shot })
       }}
     >
       {suggestion ? <PastSuggestion suggestion={suggestion} /> : null}
+      {bean ? <CoachPanel autoAsk={false} bean={bean} onApply={null} shot={shot} /> : null}
       <div className="field">
         <label className="field__label" htmlFor="edit-when">
           Pulled at

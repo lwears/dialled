@@ -8,6 +8,7 @@ Tuned for a Gaggia Classic and a Niche Zero (grind 0–50), with medium and dark
 
 - **Log a shot**: a scrolling "Before the shot" section (bean, dose and grind steppers, prefilled from your last shot with that bean, or 18g for a new bean) and a thumb dock above the tab bar for what you read off the scale: yield and shot time (with the target yield shown), the ratio, taste, and Save. Rating and notes sit behind the pencil button. After saving, the dock shows the suggestion.
 - **Suggestion after every shot**: one change at a time, with the reason. See [Suggestion rules](#suggestion-rules).
+- **Ask Claude (optional)**: add your own Claude API key in Settings and an "Ask Claude for a second opinion" link appears under each suggestion, plus an "Ask Claude about this shot" button in History. See [Ask Claude](#ask-claude).
 - **History**: shots grouped by bean, newest first, with time and grind sparklines for the last 10 shots. Tap a shot to edit or delete it.
 - **Beans**: add, edit, archive and restore.
 - **Settings**: grind step size, JSON backup and restore, CSV export of shots, and a reminder when your last backup is over 30 days old.
@@ -116,11 +117,22 @@ src/
   components/   presentational components: props in, markup out
   screens/      thin containers that wire hooks to components
   lib/          browser helpers (share/download a file, ids)
+  ai/           Claude API call (the SDK is lazy-loaded on first use)
 ```
 
 - `suggestNextStep(shot, history, bean, options?)` in `src/domain/suggest.ts` is a pure function returning `{ kind, headline, reason, next, warnings }`.
 - zod validates every boundary: imported backups, form input, and settings read from IndexedDB.
 - Components never touch storage. Screens get data and actions from `useData()`.
+
+## Ask Claude
+
+Optional. Create an API key at [platform.claude.com](https://platform.claude.com) (a Claude Pro or Max subscription doesn't cover API use), then paste it into **Settings → Claude**.
+
+- The phone calls the Claude API directly. There's no backend. The key is stored in IndexedDB on the phone only. It isn't in the repo, the build or backups.
+- Model: Claude Sonnet 5.5 at medium effort, with structured output validated against a zod schema (`coachAdviceSchema`).
+- The system prompt and request builder are in `src/domain/coach.ts`. Each request includes the bean, the shot, up to 15 earlier shots for that bean and the rule-based suggestion.
+- Answers are cached per shot for the session, so reopening a shot doesn't call Claude again.
+- Roughly a penny per answer. It needs a connection; the rule-based suggestion works offline.
 
 ## Suggestion rules
 

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { BackupBanner } from '../components/BackupBanner'
 import { BeanSelect } from '../components/BeanSelect'
+import { CoachPanel } from '../components/CoachPanel'
 import { Dock } from '../components/Dock'
 import { Sheet } from '../components/Sheet'
 import { ShotEntry } from '../components/ShotEntry'
@@ -43,6 +44,8 @@ export function LogScreen() {
   const form = useShotForm(() => draftFromPrefill(initial.beanId, initial.prefill))
   const [yieldTarget, setYieldTarget] = useState(initial.prefill.yieldOutG)
   const [suggestion, setSuggestion] = useState<Suggestion | null>(null)
+  const [savedShot, setSavedShot] = useState<Shot | null>(null)
+  const [coaching, setCoaching] = useState(false)
   const [addingBean, setAddingBean] = useState(false)
   const [editingExtras, setEditingExtras] = useState(false)
   const [saving, setSaving] = useState(false)
@@ -68,6 +71,7 @@ export function LogScreen() {
     try {
       await saveShot(shot)
       setSuggestion(suggestNextStep(shot, shots, bean, { grindStep: settings.grindStep }))
+      setSavedShot(shot)
       form.replace(draftFromPrefill(shot.beanId, shot))
       setYieldTarget(shot.yieldOutG)
       const focused = document.activeElement
@@ -83,12 +87,15 @@ export function LogScreen() {
     form.update({ dose: formatNumber(next.doseInG), grind: String(next.grindSetting) })
     setYieldTarget(next.yieldOutG)
     setSuggestion(null)
+    setCoaching(false)
   }
 
   const dose = parse(draft.dose)
   const yieldOut = parse(draft.yieldOut)
   const ratioText = draft.yieldOut.trim() && dose > 0 && yieldOut > 0 ? formatRatio(dose, yieldOut) : '—'
   const lastShot = lastShotForBean(draft.beanId, shots)
+  const savedBean = beans.find((bean) => bean.id === savedShot?.beanId)
+  const canAskClaude = Boolean(settings.anthropicApiKey && savedShot && savedBean)
   const grindDecimals = String(settings.grindStep).split('.')[1]?.length ?? 0
 
   if (beanOptions.length === 0) {
@@ -184,6 +191,7 @@ export function LogScreen() {
         {suggestion ? (
           <SuggestionCard
             onApply={() => applySuggestion(suggestion.next)}
+            onAskClaude={canAskClaude ? () => setCoaching(true) : null}
             onDismiss={() => setSuggestion(null)}
             suggestion={suggestion}
           />
@@ -225,6 +233,12 @@ export function LogScreen() {
             }
           }}
         />
+      </Sheet>
+
+      <Sheet onClose={() => setCoaching(false)} open={coaching} title="Second opinion">
+        {savedShot && savedBean ? (
+          <CoachPanel autoAsk bean={savedBean} onApply={applySuggestion} shot={savedShot} />
+        ) : null}
       </Sheet>
     </>
   )

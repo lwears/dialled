@@ -1,3 +1,5 @@
+import { useState } from 'react'
+import { CLAUDE_MODEL } from '../ai/claude'
 import { ChoiceChips } from '../components/ChoiceChips'
 import { BACKUP_REMINDER_DAYS } from '../domain/constants'
 import { formatDate, formatDateTime } from '../domain/format'
@@ -21,6 +23,8 @@ export function SettingsScreen() {
   const overdue = useBackupReminder()
   const persistence = usePersistence()
   const { status } = backup
+  const [keyDraft, setKeyDraft] = useState('')
+  const savedKey = settings.anthropicApiKey
 
   return (
     <div className="screen">
@@ -40,6 +44,62 @@ export function SettingsScreen() {
           options={GRIND_STEPS}
           value={settings.grindStep}
         />
+      </section>
+
+      <section className="card stack">
+        <h2>Claude</h2>
+        <p className="muted small">
+          Add a Claude API key to ask Claude ({CLAUDE_MODEL}) for a second opinion after a shot. The key stays on
+          this phone and isn’t included in backups. When you ask, the shot and recent shots for that bean are sent to
+          Anthropic. Each answer costs roughly a penny of API credit.
+        </p>
+        {savedKey ? (
+          <>
+            <p>
+              Key saved: <strong>…{savedKey.slice(-4)}</strong>
+            </p>
+            <button
+              className="btn btn--block"
+              onClick={() => void saveSettings({ ...settings, anthropicApiKey: undefined })}
+              type="button"
+            >
+              Remove key
+            </button>
+          </>
+        ) : (
+          <form
+            className="stack"
+            onSubmit={(event) => {
+              event.preventDefault()
+              const key = keyDraft.trim()
+              if (key) {
+                void saveSettings({ ...settings, anthropicApiKey: key })
+                setKeyDraft('')
+              }
+            }}
+          >
+            <div className="field">
+              <label className="field__label" htmlFor="claude-key">
+                API key
+              </label>
+              <input
+                autoCapitalize="off"
+                autoComplete="off"
+                autoCorrect="off"
+                className="input"
+                id="claude-key"
+                onChange={(event) => setKeyDraft(event.target.value)}
+                placeholder="sk-ant-…"
+                spellCheck={false}
+                type="password"
+                value={keyDraft}
+              />
+            </div>
+            <button className="btn btn--primary btn--block" disabled={!keyDraft.trim()} type="submit">
+              Save key
+            </button>
+          </form>
+        )}
       </section>
 
       <section className="card stack">
@@ -108,7 +168,7 @@ export function SettingsScreen() {
       </section>
 
       <p className="muted small center">
-        Dialled · everything stays on this device
+        Dialled · your data stays on this device
         <br />
         Build {formatDateTime(__BUILD_TIME__)}
       </p>

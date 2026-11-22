@@ -47,6 +47,7 @@ export const settingsSchema = z.object({
   grindStep: z.number().positive().max(5).default(DEFAULT_GRIND_STEP),
   firstRunAt: isoDateTime,
   lastBackupAt: isoDateTime.optional(),
+  anthropicApiKey: z.string().optional(),
 })
 export type Settings = z.infer<typeof settingsSchema>
 

@@ -2,7 +2,11 @@ import { formatNumber } from '../domain/format'
 import { formatRatio } from '../domain/ratio'
 import type { Suggestion } from '../domain/suggest'
 
-function SuggestionDetails({ suggestion }: { suggestion: Suggestion }) {
+export function SuggestionDetails({
+  suggestion,
+}: {
+  suggestion: Pick<Suggestion, 'headline' | 'next' | 'reason' | 'warnings'>
+}) {
   const { next } = suggestion
   return (
     <>
@@ -28,10 +32,12 @@ function SuggestionDetails({ suggestion }: { suggestion: Suggestion }) {
 
 export function SuggestionCard({
   onApply,
+  onAskClaude,
   onDismiss,
   suggestion,
 }: {
   onApply: () => void
+  onAskClaude: (() => void) | null
   onDismiss: () => void
   suggestion: Suggestion
 }) {
@@ -39,6 +45,11 @@ export function SuggestionCard({
     <div aria-live="polite" className="suggestion" role="status">
       <p className="suggestion__eyebrow">Next shot</p>
       <SuggestionDetails suggestion={suggestion} />
+      {onAskClaude ? (
+        <button className="suggestion__ask" onClick={onAskClaude} type="button">
+          Ask Claude for a second opinion
+        </button>
+      ) : null}
       <div className="suggestion__actions">
         <button className="btn btn--outline suggestion__dismiss" onClick={onDismiss} type="button">
           Dismiss
