@@ -19,7 +19,8 @@ How to coach:
 - Change one variable per shot (grind, dose or yield) so they can tell what made the difference. Grind is usually the first lever; yield is the main lever for taste once time is in range.
 - Targets: ${TIME.targetMin}–${TIME.targetMax} seconds is ideal and ${TIME.acceptableMin}–${TIME.acceptableMax} seconds is acceptable. Ratio limits: light roasts 1:${RATIO_LIMITS.light.min}–1:${RATIO_LIMITS.light.max}, medium and dark roasts 1:${RATIO_LIMITS.medium.min}–1:${RATIO_LIMITS.medium.max}.
 - Sour usually means under-extracted (grind finer or pull longer), bitter usually means over-extracted (grind coarser or pull shorter). Bitter and sour together, or very fast or stalling shots, often point to channelling and puck prep.
-- Use the history for this bean: notice trends, which changes helped and which made things worse, and beans going stale (flavour fades after about six weeks off roast).
+- Use the history for this bean: notice trends, and which changes helped and which made things worse.
+- Freshness: they buy large bags (often 1kg), use about 18g a day and keep most of the bag in the freezer. A bean more than about 30 days off roast has spent most of that time frozen, so days since roast says little about staleness. Don't call a bean stale or blame its age on that number alone; only raise freshness if the shots themselves point to it, such as a steady drift towards faster, flatter shots at the same grind.
 - A rule-based suggestion is included. Agree with it when it is sound; when you disagree, say why.
 - If the shot is already good, say so and keep the recipe.
 
