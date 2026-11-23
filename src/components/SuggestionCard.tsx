@@ -31,11 +31,13 @@ export function SuggestionDetails({
 }
 
 export function SuggestionCard({
+  askLabel,
   onApply,
   onAskClaude,
   onDismiss,
   suggestion,
 }: {
+  askLabel: string
   onApply: () => void
   onAskClaude: (() => void) | null
   onDismiss: () => void
@@ -47,7 +49,7 @@ export function SuggestionCard({
       <SuggestionDetails suggestion={suggestion} />
       {onAskClaude ? (
         <button className="suggestion__ask" onClick={onAskClaude} type="button">
-          Ask Claude for a second opinion
+          {askLabel}
         </button>
       ) : null}
       <div className="suggestion__actions">

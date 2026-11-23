@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { formatDateTime } from '../domain/format'
 import type { NextShot } from '../domain/suggest'
 import type { Bean, Shot } from '../domain/schemas'
 import { useCoach } from '../hooks/useCoach'
@@ -25,13 +26,16 @@ export function CoachPanel({
     }
   }, [ask, autoAsk, state.kind])
 
-  if (!available) {
+  if (!available && state.kind !== 'done') {
     return null
   }
 
   return (
     <section aria-label="Claude’s take" aria-live="polite" className="suggestion suggestion--past coach">
-      <p className="suggestion__eyebrow">Claude’s take</p>
+      <p className="suggestion__eyebrow">
+        Claude’s take
+        {state.kind === 'done' ? <span className="coach__asked"> · {formatDateTime(state.advice.askedAt)}</span> : null}
+      </p>
       {state.kind === 'idle' ? (
         <button className="btn btn--outline btn--block" onClick={() => void ask()} type="button">
           Ask Claude about this shot

@@ -912,6 +912,13 @@ button {
   }
 }
 
+.coach__asked {
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  color: var(--text-muted);
+}
+
 .coach__tips {
   display: flex;
   flex-direction: column;

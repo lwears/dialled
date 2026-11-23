@@ -1,5 +1,6 @@
-import { COACH_SYSTEM_PROMPT, coachAdviceSchema } from '../domain/coach'
-import type { CoachAdvice } from '../domain/coach'
+import { COACH_SYSTEM_PROMPT } from '../domain/coach'
+import { coachAdviceSchema } from '../domain/schemas'
+import type { CoachAdvice } from '../domain/schemas'
 
 export const CLAUDE_MODEL = 'claude-sonnet-5-5'
 

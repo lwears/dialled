@@ -95,7 +95,8 @@ export function LogScreen() {
   const ratioText = draft.yieldOut.trim() && dose > 0 && yieldOut > 0 ? formatRatio(dose, yieldOut) : '—'
   const lastShot = lastShotForBean(draft.beanId, shots)
   const savedBean = beans.find((bean) => bean.id === savedShot?.beanId)
-  const canAskClaude = Boolean(settings.anthropicApiKey && savedShot && savedBean)
+  const savedAdvice = shots.find((candidate) => candidate.id === savedShot?.id)?.claudeAdvice
+  const canAskClaude = Boolean(savedShot && savedBean && (settings.anthropicApiKey || savedAdvice))
   const grindDecimals = String(settings.grindStep).split('.')[1]?.length ?? 0
 
   if (beanOptions.length === 0) {
@@ -190,6 +191,7 @@ export function LogScreen() {
       >
         {suggestion ? (
           <SuggestionCard
+            askLabel={savedAdvice ? 'See Claude’s take' : 'Ask Claude for a second opinion'}
             onApply={() => applySuggestion(suggestion.next)}
             onAskClaude={canAskClaude ? () => setCoaching(true) : null}
             onDismiss={() => setSuggestion(null)}

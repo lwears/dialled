@@ -22,7 +22,8 @@ export function ShotEditor({ onDone, shot }: { onDone: () => void; shot: Shot })
     const createdAt = when ? fromLocalDateInput(when) : shot.createdAt
     const updated = form.validate(shot.id, createdAt)
     if (updated) {
-      await saveShot(updated)
+      const latest = shots.find((candidate) => candidate.id === shot.id) ?? shot
+      await saveShot({ ...updated, claudeAdvice: latest.claudeAdvice })
       onDone()
     }
   }

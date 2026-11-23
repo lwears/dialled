@@ -29,6 +29,24 @@ export const beanSchema = z.object({
 })
 export type Bean = z.infer<typeof beanSchema>
 
+export const coachAdviceSchema = z.object({
+  headline: z.string().describe('One short sentence naming the single change to make, e.g. "Grind one step finer".'),
+  reason: z.string().describe('Two or three sentences explaining why, referring to this shot and the trend.'),
+  next: z.object({
+    doseInG: z.number().describe('Dose for the next shot in grams.'),
+    yieldOutG: z.number().describe('Target yield for the next shot in grams.'),
+    grindSetting: z.number().describe('Niche Zero setting for the next shot.'),
+  }),
+  tips: z.array(z.string()).describe('Zero to three short, practical tips. Empty if nothing worth adding.'),
+})
+export type CoachAdvice = z.infer<typeof coachAdviceSchema>
+
+export const savedCoachAdviceSchema = coachAdviceSchema.extend({
+  askedAt: isoDateTime,
+  model: z.string(),
+})
+export type SavedCoachAdvice = z.infer<typeof savedCoachAdviceSchema>
+
 export const shotSchema = z.object({
   id: z.string().min(1),
   createdAt: isoDateTime,
@@ -40,6 +58,7 @@ export const shotSchema = z.object({
   taste: tasteSchema,
   rating: ratingSchema.optional(),
   notes: optionalText,
+  claudeAdvice: savedCoachAdviceSchema.optional(),
 })
 export type Shot = z.infer<typeof shotSchema>
 

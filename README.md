@@ -131,7 +131,7 @@ Optional. Create an API key at [platform.claude.com](https://platform.claude.com
 - The phone calls the Claude API directly. There's no backend. The key is stored in IndexedDB on the phone only. It isn't in the repo, the build or backups.
 - Model: Claude Sonnet 5.5 at medium effort, with structured output validated against a zod schema (`coachAdviceSchema`).
 - The system prompt and request builder are in `src/domain/coach.ts`. Each request includes the bean, the shot, up to 15 earlier shots for that bean and the rule-based suggestion.
-- Answers are cached per shot for the session, so reopening a shot doesn't call Claude again.
+- Each answer is saved on its shot (`claudeAdvice`) in IndexedDB and in JSON backups, so Claude is asked only once per shot. Editing the shot keeps the answer.
 - Roughly a penny per answer. It needs a connection; the rule-based suggestion works offline.
 
 ## Suggestion rules

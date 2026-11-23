@@ -1,4 +1,3 @@
-import { z } from 'zod'
 import { GRIND_MAX, GRIND_MIN } from './constants'
 import { formatNumber } from './format'
 import { formatRatio, roundTo } from './ratio'
@@ -9,18 +8,6 @@ import type { NextShot, Suggestion } from './suggest'
 
 const HISTORY_LIMIT = 15
 const DAY_MS = 86_400_000
-
-export const coachAdviceSchema = z.object({
-  headline: z.string().describe('One short sentence naming the single change to make, e.g. "Grind one step finer".'),
-  reason: z.string().describe('Two or three sentences explaining why, referring to this shot and the trend.'),
-  next: z.object({
-    doseInG: z.number().describe('Dose for the next shot in grams.'),
-    yieldOutG: z.number().describe('Target yield for the next shot in grams.'),
-    grindSetting: z.number().describe('Niche Zero setting for the next shot.'),
-  }),
-  tips: z.array(z.string()).describe('Zero to three short, practical tips. Empty if nothing worth adding.'),
-})
-export type CoachAdvice = z.infer<typeof coachAdviceSchema>
 
 export const COACH_SYSTEM_PROMPT = `You are an espresso coach inside Dialled, an app one home barista uses to dial in shots. After each shot they ask you what to change for the next one.
 
