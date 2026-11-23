@@ -4,7 +4,15 @@ import { DEFAULT_GRIND_STEP, GRIND_MAX, GRIND_MIN } from './constants'
 export const roastLevelSchema = z.enum(['light', 'medium', 'dark'])
 export type RoastLevel = z.infer<typeof roastLevelSchema>
 
-export const tasteSchema = z.enum(['sour', 'balanced', 'bitter', 'bitterAndSour', 'flat'])
+export const tasteSchema = z.enum([
+  'sour',
+  'slightlySour',
+  'balanced',
+  'slightlyBitter',
+  'bitter',
+  'bitterAndSour',
+  'flat',
+])
 export type Taste = z.infer<typeof tasteSchema>
 
 export const ratingSchema = z.union([z.literal(1), z.literal(2), z.literal(3), z.literal(4), z.literal(5)])
@@ -91,8 +99,13 @@ export const TASTE_LABELS = {
   bitter: 'Bitter',
   bitterAndSour: 'Bitter & sour',
   flat: 'Flat',
+  slightlyBitter: 'Slightly bitter',
+  slightlySour: 'Slightly sour',
   sour: 'Sour',
 } satisfies Record<Taste, string>
+
+export const TASTE_SCALE = ['sour', 'slightlySour', 'balanced', 'slightlyBitter', 'bitter'] as const satisfies ReadonlyArray<Taste>
+export const TASTE_OTHER = ['bitterAndSour', 'flat'] as const satisfies ReadonlyArray<Taste>
 
 export const ROAST_LABELS = {
   dark: 'Dark',

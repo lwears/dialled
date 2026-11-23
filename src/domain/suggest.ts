@@ -88,6 +88,8 @@ const TASTE_PENALTY = {
   bitter: 1,
   bitterAndSour: 2,
   flat: 1,
+  slightlyBitter: 0.5,
+  slightlySour: 0.5,
   sour: 1,
 } satisfies Record<Taste, number>
 
@@ -143,6 +145,7 @@ function decide(shot: Shot, previous: Shot | undefined, bean: Bean, grindStep: n
   const limits = RATIO_LIMITS[bean.roastLevel]
   const time = Math.round(shot.timeSec)
   const yieldStep = Math.max(1, Math.round(shot.doseInG * 0.2))
+  const smallYieldStep = Math.max(1, Math.round(shot.doseInG * 0.1))
 
   const finer = (reason: string): Decision => ({
     headline: 'Grind one step finer',
@@ -209,6 +212,36 @@ function decide(shot: Shot, previous: Shot | undefined, bean: Bean, grindStep: n
     return coarser(
       `It tasted worse after you ground finer (${previous.grindSetting} → ${shot.grindSetting}), so you've probably passed the sweet spot. Go back one step coarser.`,
       'Go one step coarser',
+    )
+  }
+
+  if (shot.taste === 'slightlySour') {
+    if (ratio < limits.max - RATIO_TOLERANCE) {
+      const { next, ratioText } = withYield(Math.min(shot.yieldOutG + smallYieldStep, shot.doseInG * limits.max))
+      return {
+        headline: `Pull a little longer: ${next.yieldOutG}g out`,
+        kind: 'increaseYield',
+        next,
+        reason: `Only slightly sour, so a small nudge is enough. A couple of grams more (${ratioText}) adds a touch more sweetness.`,
+      }
+    }
+    return finer(
+      `Slightly sour at ${formatRatio(shot.doseInG, shot.yieldOutG)}, already a long ratio for a ${bean.roastLevel} roast. One step finer should round it off.`,
+    )
+  }
+
+  if (shot.taste === 'slightlyBitter') {
+    if (ratio > limits.min + RATIO_TOLERANCE) {
+      const { next, ratioText } = withYield(Math.max(shot.yieldOutG - smallYieldStep, shot.doseInG * limits.min))
+      return {
+        headline: `Pull a little shorter: ${next.yieldOutG}g out`,
+        kind: 'decreaseYield',
+        next,
+        reason: `Only slightly bitter, so a small nudge is enough. Stopping a couple of grams earlier (${ratioText}) should take the edge off.`,
+      }
+    }
+    return coarser(
+      `Slightly bitter at ${formatRatio(shot.doseInG, shot.yieldOutG)}, already a short ratio. One step coarser should take the edge off.`,
     )
   }
 

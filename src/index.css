@@ -757,6 +757,18 @@ button {
   gap: 6px;
 }
 
+.taste-grid__row + .taste-grid__row {
+  margin-top: 6px;
+}
+
+.taste-grid__row--2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.taste-grid__row--2 .taste-grid__btn {
+  height: var(--tap-min);
+}
+
 .taste-grid__btn {
   height: var(--tap-step);
   padding: 0 var(--space-1);

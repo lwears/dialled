@@ -145,13 +145,15 @@ Rules are checked top to bottom, and the first match wins. Only one change is su
 | 3 | Time **≥ 50s** (stall) or **> 40s** | Grind one step coarser |
 | 4 | Time **< 20s** | Grind one step finer |
 | 5 | You ground finer than last time and it tasted **worse** (lower rating, worse taste tag, or sour → bitter) | Go one step coarser: you've passed the sweet spot |
-| 6 | **Sour**, light roast, ratio ≥ 1:2.5 | Drop the dose by 1–2g (suggests −1g, same ratio) |
-| 7 | **Sour**, ratio below the roast's maximum | Longer shot (+~20% of dose in yield) |
-| 8 | **Sour**, ratio at maximum | Grind finer, or raise the temperature if the shot is already ≥ 35s |
-| 9 | **Bitter**, ratio above the roast's minimum | Shorter shot |
-| 10 | **Bitter**, ratio at minimum | Grind coarser, or lower the temperature if the shot is already ≤ 25s |
-| 11 | **Flat**, ratio > 1:2.2 | Shorter shot for more body |
-| 12 | **Flat** otherwise | Grind finer, or raise the temperature if the shot is already ≥ 35s |
+| 6 | **Slightly sour** | A little longer (+~10% of dose in yield), or one step finer if the ratio is already at its maximum |
+| 7 | **Slightly bitter** | A little shorter (−~10% of dose in yield), or one step coarser if the ratio is already at its minimum |
+| 8 | **Sour**, light roast, ratio ≥ 1:2.5 | Drop the dose by 1–2g (suggests −1g, same ratio) |
+| 9 | **Sour**, ratio below the roast's maximum | Longer shot (+~20% of dose in yield) |
+| 10 | **Sour**, ratio at maximum | Grind finer, or raise the temperature if the shot is already ≥ 35s |
+| 11 | **Bitter**, ratio above the roast's minimum | Shorter shot |
+| 12 | **Bitter**, ratio at minimum | Grind coarser, or lower the temperature if the shot is already ≤ 25s |
+| 13 | **Flat**, ratio > 1:2.2 | Shorter shot for more body |
+| 14 | **Flat** otherwise | Grind finer, or raise the temperature if the shot is already ≥ 35s |
 
 Ratio limits by roast: light 1:1.8–1:3, medium and dark 1:1.5–1:2.5.
 
